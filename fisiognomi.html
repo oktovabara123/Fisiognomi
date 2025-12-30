@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Fisiognomi & Ramalan - Analisis Wajah & Tanggal Lahir</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a4e69;
+            --secondary: #9a8c98;
+            --accent: #c9ada7;
+            --light: #f2e9e4;
+            --dark: #22223b;
+            --success: #4a7c59;
+            --warning: #dda15e;
+            --zodiac: #6d597a;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .logo p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--accent);
+            color: var(--dark);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--dark);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .intro-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Birthdate Analyzer */
+        .birthdate-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .birthdate-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .birthdate-input {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .input-group input, .input-group select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .birthdate-preview {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .date-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .zodiac-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .zodiac-icon {
+            font-size: 3rem;
+            color: var(--zodiac);
+            margin-bottom: 10px;
+        }
+
+        .zodiac-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--zodiac);
+        }
+
+        /* Wajah Analyzer */
+        .analyzer-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .analyzer-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .face-diagram {
+            flex: 1;
+            min-width: 300px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .face-image {
+            width: 300px;
+            height: 350px;
+            background-color: #f0e6d2;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .face-zone {
+            position: absolute;
+            border: 2px dashed rgba(74, 78, 105, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .face-zone:hover {
+            border-color: var(--accent);
+            background-color: rgba(201, 173, 167, 0.1);
+        }
+
+        .zone-forehead {
+            width: 180px;
+            height: 70px;
+            top: 40px;
+            left: 60px;
+        }
+
+        .zone-eyes {
+            width: 200px;
+            height: 60px;
+            top: 120px;
+            left: 50px;
+        }
+
+        .zone-nose {
+            width: 80px;
+            height: 100px;
+            top: 170px;
+            left: 110px;
+        }
+
+        .zone-mouth {
+            width: 140px;
+            height: 60px;
+            top: 260px;
+            left: 80px;
+        }
+
+        .zone-chin {
+            width: 160px;
+            height: 60px;
+            top: 300px;
+            left: 70px;
+        }
+
+        .zone-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .analysis-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .zone-selector {
+            margin-bottom: 2rem;
+        }
+
+        .zone-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .zone-btn {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .zone-btn.active {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .characteristic-selector {
+            margin-bottom: 2rem;
+        }
+
+        .char-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .char-option {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .char-option:hover {
+            background-color: #f0f0f0;
+            border-left-color: var(--accent);
+        }
+
+        .char-option.selected {
+            background-color: rgba(201, 173, 167, 0.15);
+            border-left-color: var(--accent);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(34, 34, 59, 0.2);
+        }
+
+        /* Results */
+        .results-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .results-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .result-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-top: 4px solid var(--accent);
+        }
+
+        .result-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-card i {
+            color: var(--accent);
+        }
+
+        .result-card.numerology {
+            border-top-color: var(--success);
+        }
+
+        .result-card.zodiac {
+            border-top-color: var(--zodiac);
+        }
+
+        .result-card.face {
+            border-top-color: var(--warning);
+        }
+
+        /* Compatibility Section */
+        .compatibility-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .compatibility-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .face-diagram {
+                min-width: 100%;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-star-and-crescent"></i>
+                <div>
+                    <h1>Fisiognomi & Ramalan</h1>
+                    <p>Analisis Wajah & Tanggal Lahir untuk Mengenal Karakter</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" id="nav-home"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#" id="nav-birthdate"><i class="fas fa-birthday-cake"></i> Tanggal Lahir</a></li>
+                    <li><a href="#" id="nav-analyzer"><i class="fas fa-search"></i> Analisis Wajah</a></li>
+                    <li><a href="#" id="nav-results"><i class="fas fa-chart-pie"></i> Hasil</a></li>
+                    <li><a href="#" id="nav-about"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Intro Section -->
+        <section id="home-section">
+            <div class="intro-section">
+                <h2 class="section-title">Fisiognomi & Analisis Tanggal Lahir</h2>
+                <p class="intro-text">
+                    Gabungkan ilmu fisiognomi (membaca karakter dari wajah) dengan analisis numerologi dan zodiak berdasarkan tanggal lahir untuk mendapatkan insight yang lebih lengkap tentang kepribadian, potensi, dan kecocokan.
+                </p>
+                <p class="intro-text">
+                    Aplikasi ini menganalisis tiga aspek: <strong>wajah</strong> (fisiognomi), <strong>tanggal lahir</strong> (numerologi), dan <strong>zodiak</strong> (astrologi) untuk memberikan profil karakter yang komprehensif.
+                </p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>Analisis Wajah</h3>
+                    <p>Berdasarkan ilmu fisiognomi kuno yang menghubungkan ciri-ciri wajah dengan karakter seseorang. Analisis lima zona utama: dahi, mata, hidung, mulut, dan dagu.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <h3>Numerologi</h3>
+                    <p>Analisis angka tanggal lahir untuk menemukan angka kehidupan, karakter, dan jalan hidup berdasarkan sistem numerologi Pythagoras.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Zodiak & Astrologi</h3>
+                    <p>Penentuan zodiak berdasarkan tanggal lahir dan analisis karakter berdasarkan sifat-sifat tanda zodiak dalam astrologi Barat.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Birthdate Analysis Section -->
+        <section id="birthdate-section" style="display: none;">
+            <div class="birthdate-section">
+                <h2 class="section-title">Analisis Berdasarkan Tanggal Lahir</h2>
+                <p class="intro-text">Masukkan tanggal lahir Anda untuk mendapatkan analisis numerologi dan zodiak.</p>
+                
+                <div class="birthdate-container">
+                    <div class="birthdate-input">
+                        <div class="input-group">
+                            <label for="birth-date"><i class="fas fa-calendar-alt"></i> Tanggal Lahir</label>
+                            <input type="date" id="birth-date" max="2023-12-31">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="birth-time"><i class="fas fa-clock"></i> Waktu Lahir (opsional)</label>
+                            <select id="birth-time">
+                                <option value="">Pilih waktu lahir</option>
+                                <option value="00:00-02:00">Tengah malam (00:00 - 02:00)</option>
+                                <option value="02:00-04:00">Dini hari (02:00 - 04:00)</option>
+                                <option value="04:00-06:00">Fajar (04:00 - 06:00)</option>
+                                <option value="06:00-08:00">Pagi (06:00 - 08:00)</option>
+                                <option value="08:00-10:00">Pagi hari (08:00 - 10:00)</option>
+                                <option value="10:00-12:00">Menjelang siang (10:00 - 12:00)</option>
+                                <option value="12:00-14:00">Siang (12:00 - 14:00)</option>
+                                <option value="14:00-16:00">Sore (14:00 - 16:00)</option>
+                                <option value="16:00-18:00">Menjelang malam (16:00 - 18:00)</option>
+                                <option value="18:00-20:00">Malam (18:00 - 20:00)</option>
+                                <option value="20:00-22:00">Malam hari (20:00 - 22:00)</option>
+                                <option value="22:00-24:00">Larut malam (22:00 - 24:00)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="birth-place"><i class="fas fa-map-marker-alt"></i> Tempat Lahir (opsional)</label>
+                            <input type="text" id="birth-place" placeholder="Kota tempat lahir">
+                        </div>
+                        
+                        <button class="analyze-btn" id="analyze-birthdate-btn">
+                            <i class="fas fa-calculator"></i> Analisis Tanggal Lahir
+                        </button>
+                    </div>
+                    
+                    <div class="birthdate-preview">
+                        <h3>Preview Tanggal Lahir</h3>
+                        <div class="date-display" id="date-display">-</div>
+                        <div class="zodiac-display">
+                            <div class="zodiac-icon" id="zodiac-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="zodiac-name" id="zodiac-name">Zodiak akan muncul di sini</div>
+                            <div id="zodiac-date-range"></div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <h4>Angka Kehidupan (Numerologi)</h4>
+                            <div style="font-size: 3rem; font-weight: bold; color: var(--success);" id="life-path-number">-</div>
+                            <p id="life-path-description"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Birthdate Results -->
+            <div class="results-section" id="birthdate-results-section">
+                <div class="results-header">
+                    <h2 class="section-title" style="margin-bottom: 0;">Hasil Analisis Tanggal Lahir</h2>
+                    <button id="back-to-birthdate" class="zone-btn">
+                        <i class="fas fa-arrow-left"></i> Kembali
+                    </button>
+                </div>
+                
+                <div class="loading" id="birthdate-loading">
+                    <div class="spinner"></div>
+                    <p>Menganalisis tanggal lahir...</p>
+                </div>
+                
+                <div class="results-content" id="birthdate-results-content">
+                    <!-- Results will be loaded by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Face Analyzer Section -->
+        <section id="analyzer-section" style="display: none;">
+            <div class="analyzer-section">
+                <h2 class="section-title">Analisis Wajah (Fisiognomi)</h2>
+                <p class="intro-text">Pilih zona wajah dan karakteristik yang sesuai untuk menganalisis kepribadian berdasarkan fisiognomi.</p>
+                
+                <div class="analyzer-container">
+                    <!-- Face Diagram -->
+                    <div class="face-diagram">
+                        <div class="face-image">
+                            <div class="face-zone zone-forehead" data-zone="forehead">
+                                <span class="zone-label">Dahi</span>
+                            </div>
+                            <div class="face-zone zone-eyes" data-zone="eyes">
+                                <span class="zone-label">Mata</span>
+                            </div>
+                            <div class="face-zone zone-nose" data-zone="nose">
+                                <span class="zone-label">Hidung</span>
+                            </div>
+                            <div class="face-zone zone-mouth" data-zone="mouth">
+                                <span class="zone-label">Mulut</span>
+                            </div>
+                            <div class="face-zone zone-chin" data-zone="chin">
+                                <span class="zone-label">Dagu</span>
+                            </div>
+                        </div>
+                        <p>Klik pada zona wajah atau pilih dari tombol di bawah</p>
+                    </div>
+                    
+                    <!-- Analysis Controls -->
+                    <div class="analysis-controls">
+                        <div class="zone-selector">
+                            <h3>Pilih Zona Wajah</h3>
+                            <div class="zone-buttons">
+                                <button class="zone-btn active" data-zone="forehead">Dahi</button>
+                                <button class="zone-btn" data-zone="eyes">Mata</button>
+                                <button class="zone-btn" data-zone="nose">Hidung</button>
+                                <button class="zone-btn" data-zone="mouth">Mulut</button>
+                                <button class="zone-btn" data-zone="chin">Dagu</button>
+                            </div>
+                        </div>
+                        
+                        <div class="characteristic-selector">
+                            <h3>Pilih Karakteristik <span id="current-zone">Dahi</span></h3>
+                            <div class="char-options" id="char-options">
+                                <!-- Options will be loaded by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <button class="analyze-btn" id="analyze-face-btn">
+                            <i class="fas fa-user-circle"></i> Analisis Wajah
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Combined Results Section -->
+        <section id="results-section" style="display: none;">
+            <div class="results-section active">
+                <div class="results-header">
+                    <h2 class="section-title" style="margin-bottom: 0;">Hasil Analisis Lengkap</h2>
+                    <div>
+                        <button id="new-combined-analysis" class="zone-btn" style="margin-right: 10px;">
+                            <i class="fas fa-redo"></i> Analisis Baru
+                        </button>
+                        <button id="save-analysis" class="zone-btn">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="loading" id="combined-loading">
+                    <div class="spinner"></div>
+                    <p>Menggabungkan hasil analisis...</p>
+                </div>
+                
+                <div class="results-content" id="combined-results-content">
+                    <!-- Results will be loaded by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about-section" style="display: none;">
+            <div class="intro-section">
+                <h2 class="section-title">Tentang Aplikasi</h2>
+                <p class="intro-text">
+                    Aplikasi Fisiognomi & Ramalan dikembangkan sebagai alat eksplorasi diri yang menggabungkan tiga pendekatan analisis karakter:
+                </p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>Fisiognomi</h3>
+                        <p>Ilmu kuno yang mempelajari hubungan antara ciri-ciri wajah dengan karakter seseorang. Sudah dipraktikkan sejak zaman Aristoteles di Yunani kuno dan berkembang di berbagai kebudayaan.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Numerologi</h3>
+                        <p>Sistem kepercayaan dalam hubungan mistis antara angka dan kehidupan. Numerologi Pythagoras menghubungkan tanggal lahir dengan karakter, takdir, dan potensi seseorang.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Astrologi</h3>
+                        <p>Studi tentang pergerakan dan posisi benda langit yang dipercaya mempengaruhi kehidupan manusia. Zodiak berdasarkan tanggal lahir memberikan insight tentang kepribadian dasar.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background-color: #f8f9fa; border-radius: 10px;">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Disclaimer Penting</h3>
+                    <p>Aplikasi ini dibuat untuk tujuan edukasi dan hiburan semata. Hasil analisis tidak dapat dijamin keakuratannya dan tidak dimaksudkan untuk pengambilan keputusan penting dalam kehidupan. Fisiognomi, numerologi, dan astrologi dianggap pseudosains oleh komunitas ilmiah mainstream.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Fisiognomi & Ramalan</h3>
+                    <p>Aplikasi analisis karakter berdasarkan wajah, tanggal lahir, dan zodiak. Gabungan ilmu kuno dan analisis modern untuk eksplorasi diri.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Menu Cepat</h3>
+                    <ul>
+                        <li><a href="#" class="footer-nav" data-section="home"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="#" class="footer-nav" data-section="birthdate"><i class="fas fa-birthday-cake"></i> Tanggal Lahir</a></li>
+                        <li><a href="#" class="footer-nav" data-section="analyzer"><i class="fas fa-search"></i> Analisis Wajah</a></li>
+                        <li><a href="#" class="footer-nav" data-section="results"><i class="fas fa-chart-pie"></i> Hasil</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Analisis Tersedia</h3>
+                    <ul>
+                        <li><a href="#" class="footer-nav" data-section="birthdate"><i class="fas fa-calculator"></i> Numerologi</a></li>
+                        <li><a href="#" class="footer-nav" data-section="birthdate"><i class="fas fa-star"></i> Zodiak</a></li>
+                        <li><a href="#" class="footer-nav" data-section="analyzer"><i class="fas fa-user-circle"></i> Fisiognomi</a></li>
+                        <li><a href="#" class="footer-nav" data-section="results"><i class="fas fa-blender"></i> Analisis Gabungan</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Aplikasi Fisiognomi & Ramalan. Dibuat untuk tujuan edukasi dan hiburan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data fisiognomi
+        const physiognomyData = {
+            forehead: {
+                name: "Dahi",
+                characteristics: [
+                    { id: "forehead-1", name: "Lebar dan Tinggi", description: "Menandakan kecerdasan, kemampuan analitis, dan pemikiran strategis. Orang dengan dahi seperti ini cenderung berpikir jauh ke depan." },
+                    { id: "forehead-2", name: "Sempit dan Rendah", description: "Menunjukkan sifat praktis, fokus pada detail, dan berpikir konkret. Lebih suka hal-hal yang nyata dan dapat diraba." },
+                    { id: "forehead-3", name: "Berkening Lebar", description: "Mencerminkan kreativitas, imajinasi, dan kemampuan artistik. Sering memiliki bakat dalam seni atau desain." },
+                    { id: "forehead-4", name: "Berkening Datar", description: "Menandakan logika kuat, rasionalitas, dan berpikir sistematis. Unggul dalam matematika dan ilmu eksakta." },
+                    { id: "forehead-5", name: "Ada Garis Vertikal", description: "Menunjukkan kemampuan memecahkan masalah dan ketekunan. Garis vertikal di antara alis menandakan pemikir mendalam." }
+                ]
+            },
+            eyes: {
+                name: "Mata",
+                characteristics: [
+                    { id: "eyes-1", name: "Besar dan Bulat", description: "Menandakan sifat terbuka, ekspresif, dan empati tinggi. Mudah berempati dengan perasaan orang lain." },
+                    { id: "eyes-2", name: "Kecil dan Sipit", description: "Mencerminkan ketelitian, observasi tajam, dan fokus pada detail. Sering kali perfeksionis." },
+                    { id: "eyes-3", name: "Jarak Lebar", description: "Menunjukkan pemikiran luas, toleransi, dan adaptabilitas. Mudah menerima pandangan yang berbeda." },
+                    { id: "eyes-4", name: "Jarak Dekat", description: "Menandakan konsentrasi tinggi, fokus, dan perhatian pada detail. Sangat teliti dalam pekerjaan." },
+                    { id: "eyes-5", name: "Sudut Mata Naik", description: "Mencerminkan optimisme, energi positif, dan sifat ramah. Selalu melihat sisi baik dari setiap situasi." }
+                ]
+            },
+            nose: {
+                name: "Hidung",
+                characteristics: [
+                    { id: "nose-1", name: "Lurus dan Proporsional", description: "Menandakan keseimbangan, stabilitas emosi, dan kemampuan mengambil keputusan dengan kepala dingin." },
+                    { id: "nose-2", name: "Mancung", description: "Mencerminkan kepercayaan diri, ambisi, dan kepemimpinan. Sering menjadi pemimpin alami." },
+                    { id: "nose-3", name: "Pesek", description: "Menunjukkan sifat praktis, down to earth, dan mudah bergaul. Tidak suka bertele-tele." },
+                    { id: "nose-4", name: "Besar dengan Cupang Lebar", description: "Menandakan kemurahan hati, kemampuan finansial, dan kedermawanan. Pandai mengelola uang." },
+                    { id: "nose-5", name: "Lubang Hidung Terlihat", description: "Mencerminkan sifat spontan, energik, dan antusiasme. Penuh semangat dalam menghadapi hidup." }
+                ]
+            },
+            mouth: {
+                name: "Mulut",
+                characteristics: [
+                    { id: "mouth-1", name: "Bibir Tebal", description: "Menandakan sifat sensual, ekspresif, dan empati tinggi. Komunikator yang baik dan penuh perasaan." },
+                    { id: "mouth-2", name: "Bibir Tipis", description: "Mencerminkan ketelitian, analitis, dan kemampuan komunikasi efektif. Berbicara langsung ke inti permasalahan." },
+                    { id: "mouth-3", name: "Sudut Mulut Naik", description: "Menunjukkan optimisme, sifat ramah, dan pandangan positif. Selalu tersenyum dan menyenangkan." },
+                    { id: "mouth-4", name: "Sudut Mulut Turun", description: "Menandakan sifat realistis, skeptis, dan analitis. Tidak mudah tertipu oleh penampilan." },
+                    { id: "mouth-5", name: "Lebar", description: "Mencerminkan kemampuan komunikasi, ekspresivitas, dan karisma. Mudah mempengaruhi orang lain." }
+                ]
+            },
+            chin: {
+                name: "Dagu",
+                characteristics: [
+                    { id: "chin-1", name: "Bulat", description: "Menandakan sifat ramah, baik hati, dan kemampuan bersosialisasi. Disukai banyak orang." },
+                    { id: "chin-2", name: "Persegi", description: "Mencerminkan tekad kuat, ketegasan, dan kemampuan mengatasi tantangan. Tidak mudah menyerah." },
+                    { id: "chin-3", name: "Runcing", description: "Menunjukkan kreativitas, estetika, dan sifat sensitif. Memiliki selera seni yang baik." },
+                    { id: "chin-4", name: "Berlesung", description: "Menandakan karisma, daya tarik, dan sifat menyenangkan. Mudah menarik perhatian orang." },
+                    { id: "chin-5", name: "Menonjol", description: "Mencerminkan keteguhan, kemauan keras, dan determinasi. Punya pendirian yang kuat." }
+                ]
+            }
+        };
+
+        // Data zodiak
+        const zodiacData = [
+            { name: "Aries", dates: "21 Maret - 19 April", icon: "fas fa-fire", element: "Api", 
+              traits: "Berani, energik, kompetitif, impulsif", 
+              description: "Aries adalah pionir zodiak. Penuh semangat, berani, dan selalu siap memimpin. Sifatnya yang kompetitif membuatnya selalu ingin menjadi yang pertama." },
+            { name: "Taurus", dates: "20 April - 20 Mei", icon: "fas fa-leaf", element: "Tanah", 
+              traits: "Praktis, dapat diandalkan, sensual, keras kepala", 
+              description: "Taurus menghargai stabilitas dan kenyamanan. Mereka praktis, dapat diandalkan, dan memiliki selera yang baik. Namun bisa sangat keras kepala saat sudah memutuskan sesuatu." },
+            { name: "Gemini", dates: "21 Mei - 20 Juni", icon: "fas fa-comments", element: "Udara", 
+              traits: "Komunikatif, ingin tahu, adaptable, tidak konsisten", 
+              description: "Gemini adalah komunikator alami zodiak. Mereka ingin tahu tentang segala hal, mudah beradaptasi, dan selalu penuh ide. Namun kadang terlihat tidak konsisten karena minatnya yang luas." },
+            { name: "Cancer", dates: "21 Juni - 22 Juli", icon: "fas fa-home", element: "Air", 
+              traits: "Perasa, protektif, intuitif, moody", 
+              description: "Cancer sangat peduli dengan keluarga dan rumah. Mereka intuitif, protektif terhadap orang yang dicintai, dan memiliki memori yang kuat. Namun bisa moody dan sensitif." },
+            { name: "Leo", dates: "23 Juli - 22 Agustus", icon: "fas fa-crown", element: "Api", 
+              traits: "Dermawan, kreatif, percaya diri, dominan", 
+              description: "Leo adalah bintang di antara tanda zodiak. Mereka kreatif, dermawan, dan penuh percaya diri. Suka menjadi pusat perhatian dan memiliki karisma alami." },
+            { name: "Virgo", dates: "23 Agustus - 22 September", icon: "fas fa-cog", element: "Tanah", 
+              traits: "Analitis, praktis, teliti, perfeksionis", 
+              description: "Virgo adalah perfeksionis zodiak. Mereka analitis, praktis, dan sangat teliti. Unggul dalam mengorganisir dan memperhatikan detail kecil yang sering terlewatkan orang lain." },
+            { name: "Libra", dates: "23 September - 22 Oktober", icon: "fas fa-balance-scale", element: "Udara", 
+              traits: "Adil, sosial, romantis, ragu-ragu", 
+              description: "Libra selalu mencari keseimbangan dan keharmonisan. Mereka adil, sosial, dan romantis. Namun sering kesulitan mengambil keputusan karena melihat terlalu banyak sisi." },
+            { name: "Scorpio", dates: "23 Oktober - 21 November", icon: "fas fa-scorpion", element: "Air", 
+              traits: "Intens, setia, penuh gairah, posesif", 
+              description: "Scorpio adalah tanda zodiak paling intens. Mereka penuh gairah, setia, dan memiliki intuisi yang tajam. Dapat menjadi posesif dan sulit memaafkan ketika dikhianati." },
+            { name: "Sagittarius", dates: "22 November - 21 Desember", icon: "fas fa-arrow-right", element: "Api", 
+              traits: "Optimis, petualang, filosofis, tidak sabaran", 
+              description: "Sagittarius adalah petualang zodiak. Mereka optimis, suka kebebasan, dan berpikiran filosofis. Selalu mencari makna hidup dan pengalaman baru." },
+            { name: "Capricorn", dates: "22 Desember - 19 Januari", icon: "fas fa-mountain", element: "Tanah", 
+              traits: "Ambisisus, disiplin, bertanggung jawab, pesimis", 
+              description: "Capricorn adalah pekerja keras zodiak. Mereka ambisius, disiplin, dan sangat bertanggung jawab. Fokus pada tujuan jangka panjang dan pencapaian karier." },
+            { name: "Aquarius", dates: "20 Januari - 18 Februari", icon: "fas fa-water", element: "Udara", 
+              traits: "Inovatif, humanis, independen, tidak konvensional", 
+              description: "Aquarius adalah inovator zodiak. Mereka humanis, independen, dan berpikiran maju. Sering menjadi agen perubahan dan tidak suka mengikuti arus mainstream." },
+            { name: "Pisces", dates: "19 Februari - 20 Maret", icon: "fas fa-fish", element: "Air", 
+              traits: "Empati, artistik, intuitif, melarikan diri", 
+              description: "Pisces adalah seniman zodiak. Mereka empatik, artistik, dan sangat intuitif. Mudah tersentuh oleh penderitaan orang lain dan memiliki imajinasi yang kuat." }
+        ];
+
+        // Data numerologi
+        const numerologyData = {
+            1: { 
+                name: "Pemimpin", 
+                description: "Angka 1 melambangkan kemandirian, kepemimpinan, dan inisiatif. Anda adalah pionir yang suka memulai hal baru. Memiliki tekad kuat dan kemampuan untuk berdiri sendiri.",
+                strengths: "Mandiri, kreatif, berani, ambisius",
+                weaknesses: "Egois, keras kepala, dominan"
+            },
+            2: { 
+                name: "Penengah", 
+                description: "Angka 2 melambangkan kerja sama, diplomasi, dan kepekaan. Anda adalah penengah yang mampu menyatukan perbedaan. Memiliki intuisi kuat dan kemampuan beradaptasi.",
+                strengths: "Kooperatif, sensitif, intuitif, sabar",
+                weaknesses: "Tergantung, ragu-ragu, terlalu emosional"
+            },
+            3: { 
+                name: "Komunikator", 
+                description: "Angka 3 melambangkan ekspresi, kreativitas, dan sosialisasi. Anda adalah komunikator yang mampu menginspirasi orang lain. Memiliki bakat seni dan kemampuan bersosialisasi.",
+                strengths: "Kreatif, ekspresif, optimis, karismatik",
+                weaknesses: "Tidak fokus, superficial, boros"
+            },
+            4: { 
+                name: "Pembangun", 
+                description: "Angka 4 melambangkan stabilitas, praktikalitas, dan kerja keras. Anda adalah pembangun yang menciptakan fondasi kuat. Memiliki disiplin dan tanggung jawab yang tinggi.",
+                strengths: "Praktis, dapat diandalkan, disiplin, jujur",
+                weaknesses: "Kaku, keras kepala, tidak fleksibel"
+            },
+            5: { 
+                name: "Petualang", 
+                description: "Angka 5 melambangkan kebebasan, perubahan, dan petualangan. Anda adalah petualang yang mencari pengalaman baru. Memiliki jiwa bebas dan kemampuan adaptasi tinggi.",
+                strengths: "Adaptif, bebas, penuh semangat, progresif",
+                weaknesses: "Tidak konsisten, tidak sabar, mengambil risiko berlebihan"
+            },
+            6: { 
+                name: "Pengasuh", 
+                description: "Angka 6 melambangkan tanggung jawab, keluarga, dan pelayanan. Anda adalah pengasuh yang memperhatikan kesejahteraan orang lain. Memiliki rasa tanggung jawab dan kasih sayang yang besar.",
+                strengths: "Bertanggung jawab, penyayang, dapat diandalkan, protektif",
+                weaknesses: "Cemas, posesif, terlalu mengorbankan diri"
+            },
+            7: { 
+                name: "Pencari Kebenaran", 
+                description: "Angka 7 melambangkan spiritualitas, analisis, dan kebijaksanaan. Anda adalah pencari kebenaran yang selalu bertanya 'mengapa'. Memiliki intuisi kuat dan kemampuan analitis.",
+                strengths: "Analitis, intuitif, spiritual, bijaksana",
+                weaknesses: "Sinisme, menarik diri, skeptis"
+            },
+            8: { 
+                name: "Eksekutif", 
+                description: "Angka 8 melambangkan kekuasaan, ambisi, dan material. Anda adalah eksekutif yang mampu mencapai kesuksesan finansial. Memiliki bakat kepemimpinan dan kemampuan organisasi.",
+                strengths: "Ambisisus, berwibawa, terorganisir, praktis",
+                weaknesses: "Materialistis, tidak sabaran, terlalu fokus pada uang"
+            },
+            9: { 
+                name: "Humanis", 
+                description: "Angka 9 melambangkan humanisme, kebijaksanaan, dan penyelesaian. Anda adalah humanis yang peduli pada kemanusiaan. Memiliki empati tinggi dan visi yang luas.",
+                strengths: "Humanis, kreatif, penyayang, idealis",
+                weaknesses: "Mimpi-mimpi yang tidak realistis, mengabaikan diri sendiri, sentimental"
+            }
+        };
+
+        // State aplikasi
+        let currentZone = 'forehead';
+        let selectedCharacteristics = {
+            forehead: null,
+            eyes: null,
+            nose: null,
+            mouth: null,
+            chin: null
+        };
+        
+        let birthdateData = null;
+        let currentBirthdate = null;
+        
+        // History dari localStorage
+        let analysisHistory = JSON.parse(localStorage.getItem('physiognomyBirthdateHistory')) || [];
+
+        // DOM Elements
+        const homeSection = document.getElementById('home-section');
+        const birthdateSection = document.getElementById('birthdate-section');
+        const analyzerSection = document.getElementById('analyzer-section');
+        const resultsSection = document.getElementById('results-section');
+        const aboutSection = document.getElementById('about-section');
+        const birthdateResultsSection = document.getElementById('birthdate-results-section');
+        
+        // Navigation
+        document.querySelectorAll('nav a, .footer-nav').forEach(navItem => {
+            navItem.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update navigation active state
+                document.querySelectorAll('nav a').forEach(item => item.classList.remove('active'));
+                if (this.classList.contains('footer-nav')) {
+                    const section = this.getAttribute('data-section');
+                    const navItem = document.querySelector(`#nav-${section}`);
+                    if (navItem) navItem.classList.add('active');
+                } else {
+                    this.classList.add('active');
+                }
+                
+                // Show selected section
+                const targetId = this.id || this.getAttribute('data-section');
+                let targetSection;
+                
+                switch(targetId) {
+                    case 'nav-home':
+                    case 'home':
+                        targetSection = homeSection;
+                        break;
+                    case 'nav-birthdate':
+                    case 'birthdate':
+                        targetSection = birthdateSection;
+                        updateBirthdatePreview();
+                        break;
+                    case 'nav-analyzer':
+                    case 'analyzer':
+                        targetSection = analyzerSection;
+                        break;
+                    case 'nav-results':
+                    case 'results':
+                        targetSection = resultsSection;
+                        showCombinedResults();
+                        break;
+                    case 'nav-about':
+                    case 'about':
+                        targetSection = aboutSection;
+                        break;
+                    default:
+                        targetSection = homeSection;
+                }
+                
+                // Hide all sections
+                [homeSection, birthdateSection, analyzerSection, resultsSection, aboutSection, birthdateResultsSection].forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show target section
+                targetSection.style.display = 'block';
+            });
+        });
+
+        // Initialize zone buttons
+        document.querySelectorAll('.zone-btn:not(#new-combined-analysis):not(#save-analysis):not(#back-to-birthdate)').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const zone = this.getAttribute('data-zone');
+                if (zone) {
+                    selectZone(zone);
+                }
+            });
+        });
+
+        // Face zone click handlers
+        document.querySelectorAll('.face-zone').forEach(zone => {
+            zone.addEventListener('click', function() {
+                const zoneName = this.getAttribute('data-zone');
+                selectZone(zoneName);
+            });
+        });
+
+        // Birthdate input listener
+        document.getElementById('birth-date').addEventListener('change', updateBirthdatePreview);
+
+        // Analyze birthdate button
+        document.getElementById('analyze-birthdate-btn').addEventListener('click', analyzeBirthdate);
+
+        // Back to birthdate from results
+        document.getElementById('back-to-birthdate').addEventListener('click', function() {
+            birthdateResultsSection.style.display = 'none';
+            birthdateSection.style.display = 'block';
+        });
+
+        // Analyze face button
+        document.getElementById('analyze-face-btn').addEventListener('click', performFaceAnalysis);
+
+        // New combined analysis button
+        document.getElementById('new-combined-analysis').addEventListener('click', function() {
+            // Reset selections
+            selectedCharacteristics = {
+                forehead: null,
+                eyes: null,
+                nose: null,
+                mouth: null,
+                chin: null
+            };
+            
+            birthdateData = null;
+            currentBirthdate = null;
+            
+            // Reset UI
+            document.querySelectorAll('.char-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.getElementById('birth-date').value = '';
+            document.getElementById('birth-time').value = '';
+            document.getElementById('birth-place').value = '';
+            
+            // Go to home
+            document.querySelector('#nav-home').click();
+        });
+
+        // Save analysis button
+        document.getElementById('save-analysis').addEventListener('click', saveCombinedAnalysis);
+
+        // Function to update birthdate preview
+        function updateBirthdatePreview() {
+            const birthDateInput = document.getElementById('birth-date');
+            const dateDisplay = document.getElementById('date-display');
+            const zodiacIcon = document.getElementById('zodiac-icon');
+            const zodiacName = document.getElementById('zodiac-name');
+            const zodiacDateRange = document.getElementById('zodiac-date-range');
+            const lifePathNumber = document.getElementById('life-path-number');
+            const lifePathDescription = document.getElementById('life-path-description');
+            
+            if (birthDateInput.value) {
+                const date = new Date(birthDateInput.value);
+                const formattedDate = date.toLocaleDateString('id-ID', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                dateDisplay.textContent = formattedDate;
+                currentBirthdate = date;
+                
+                // Calculate zodiac
+                const zodiac = getZodiac(date);
+                zodiacIcon.innerHTML = `<i class="${zodiac.icon}"></i>`;
+                zodiacName.textContent = zodiac.name;
+                zodiacDateRange.textContent = zodiac.dates;
+                
+                // Calculate life path number
+                const lifePath = calculateLifePathNumber(date);
+                lifePathNumber.textContent = lifePath.number;
+                lifePathDescription.textContent = numerologyData[lifePath.number].name;
+            } else {
+                dateDisplay.textContent = '-';
+                zodiacIcon.innerHTML = '<i class="fas fa-question-circle"></i>';
+                zodiacName.textContent = 'Zodiak akan muncul di sini';
+                zodiacDateRange.textContent = '';
+                lifePathNumber.textContent = '-';
+                lifePathDescription.textContent = '';
+            }
+        }
+
+        // Function to get zodiac based on date
+        function getZodiac(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            
+            if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return zodiacData[0]; // Aries
+            if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return zodiacData[1]; // Taurus
+            if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return zodiacData[2]; // Gemini
+            if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return zodiacData[3]; // Cancer
+            if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return zodiacData[4]; // Leo
+            if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return zodiacData[5]; // Virgo
+            if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return zodiacData[6]; // Libra
+            if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return zodiacData[7]; // Scorpio
+            if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return zodiacData[8]; // Sagittarius
+            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return zodiacData[9]; // Capricorn
+            if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return zodiacData[10]; // Aquarius
+            if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return zodiacData[11]; // Pisces
+            
+            return zodiacData[0]; // Default
+        }
+
+        // Function to calculate life path number
+        function calculateLifePathNumber(date) {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            
+            // Reduce day, month, and year to single digits
+            const dayReduced = reduceToSingleDigit(day);
+            const monthReduced = reduceToSingleDigit(month);
+            const yearReduced = reduceToSingleDigit(year);
+            
+            // Sum them and reduce to single digit
+            let lifePath = dayReduced + monthReduced + yearReduced;
+            lifePath = reduceToSingleDigit(lifePath);
+            
+            // Master numbers (11, 22, 33) are not reduced further
+            if (lifePath === 11 || lifePath === 22 || lifePath === 33) {
+                return { number: lifePath, isMaster: true };
+            }
+            
+            return { number: lifePath, isMaster: false };
+        }
+
+        // Function to reduce number to single digit
+        function reduceToSingleDigit(num) {
+            while (num > 9 && num !== 11 && num !== 22 && num !== 33) {
+                let sum = 0;
+                const digits = num.toString().split('');
+                for (let digit of digits) {
+                    sum += parseInt(digit);
+                }
+                num = sum;
+            }
+            return num;
+        }
+
+        // Function to analyze birthdate
+        function analyzeBirthdate() {
+            const birthDateInput = document.getElementById('birth-date');
+            
+            if (!birthDateInput.value) {
+                alert('Silakan masukkan tanggal lahir terlebih dahulu.');
+                return;
+            }
+            
+            const date = new Date(birthDateInput.value);
+            const birthTime = document.getElementById('birth-time').value;
+            const birthPlace = document.getElementById('birth-place').value;
+            
+            // Show loading
+            document.getElementById('birthdate-loading').classList.add('active');
+            
+            // Simulate analysis delay
+            setTimeout(() => {
+                // Calculate zodiac
+                const zodiac = getZodiac(date);
+                
+                // Calculate life path number
+                const lifePath = calculateLifePathNumber(date);
+                
+                // Store birthdate data
+                birthdateData = {
+                    date: date.toLocaleDateString('id-ID', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }),
+                    zodiac: zodiac,
+                    lifePath: lifePath,
+                    birthTime: birthTime,
+                    birthPlace: birthPlace
+                };
+                
+                // Display results
+                displayBirthdateResults();
+                
+                // Hide loading
+                document.getElementById('birthdate-loading').classList.remove('active');
+                
+                // Show results section
+                birthdateSection.style.display = 'none';
+                birthdateResultsSection.style.display = 'block';
+            }, 1000);
+        }
+
+        // Function to display birthdate results
+        function displayBirthdateResults() {
+            const container = document.getElementById('birthdate-results-content');
+            
+            if (!birthdateData) return;
+            
+            container.innerHTML = '';
+            
+            // Zodiac card
+            const zodiacCard = document.createElement('div');
+            zodiacCard.className = 'result-card zodiac';
+            zodiacCard.innerHTML = `
+                <h4><i class="${birthdateData.zodiac.icon}"></i> Zodiak: ${birthdateData.zodiac.name}</h4>
+                <p><strong>Periode:</strong> ${birthdateData.zodiac.dates}</p>
+                <p><strong>Unsur:</strong> ${birthdateData.zodiac.element}</p>
+                <p><strong>Sifat Utama:</strong> ${birthdateData.zodiac.traits}</p>
+                <p>${birthdateData.zodiac.description}</p>
+            `;
+            container.appendChild(zodiacCard);
+            
+            // Numerology card
+            const numerologyCard = document.createElement('div');
+            numerologyCard.className = 'result-card numerology';
+            const isMaster = birthdateData.lifePath.isMaster ? '<span style="color: var(--zodiac); font-size: 0.9rem;"> (Angka Master)</span>' : '';
+            numerologyCard.innerHTML = `
+                <h4><i class="fas fa-calculator"></i> Numerologi: Angka Jalan Hidup ${birthdateData.lifePath.number}${isMaster}</h4>
+                <p><strong>Nama:</strong> ${numerologyData[birthdateData.lifePath.number].name}</p>
+                <p>${numerologyData[birthdateData.lifePath.number].description}</p>
+                <p><strong>Kekuatan:</strong> ${numerologyData[birthdateData.lifePath.number].strengths}</p>
+                <p><strong>Kelemahan:</strong> ${numerologyData[birthdateData.lifePath.number].weaknesses}</p>
+            `;
+            container.appendChild(numerologyCard);
+            
+            // Additional info card
+            const infoCard = document.createElement('div');
+            infoCard.className = 'result-card';
+            let timeInfo = '';
+            if (birthdateData.birthTime) {
+                timeInfo = `<p><strong>Waktu Lahir:</strong> ${birthdateData.birthTime}</p>`;
+            }
+            
+            let placeInfo = '';
+            if (birthdateData.birthPlace) {
+                placeInfo = `<p><strong>Tempat Lahir:</strong> ${birthdateData.birthPlace}</p>`;
+            }
+            
+            infoCard.innerHTML = `
+                <h4><i class="fas fa-info-circle"></i> Informasi Tambahan</h4>
+                <p><strong>Tanggal Lahir:</strong> ${birthdateData.date}</p>
+                ${timeInfo}
+                ${placeInfo}
+                <p style="margin-top: 15px;"><strong>Catatan:</strong> Hasil ini berdasarkan analisis numerologi dan astrologi Barat. Untuk analisis yang lebih lengkap, kombinasikan dengan analisis wajah (fisiognomi).</p>
+            `;
+            container.appendChild(infoCard);
+            
+            // Action card
+            const actionCard = document.createElement('div');
+            actionCard.className = 'result-card';
+            actionCard.innerHTML = `
+                <h4><i class="fas fa-forward"></i> Langkah Selanjutnya</h4>
+                <p>Untuk mendapatkan analisis karakter yang lebih lengkap, kombinasikan dengan analisis wajah (fisiognomi).</p>
+                <button id="goto-face-analysis" class="analyze-btn" style="margin-top: 15px;">
+                    <i class="fas fa-user-circle"></i> Lanjut ke Analisis Wajah
+                </button>
+                <button id="goto-combined-analysis" class="zone-btn" style="margin-top: 10px; width: 100%;">
+                    <i class="fas fa-blender"></i> Lihat Analisis Gabungan
+                </button>
+            `;
+            container.appendChild(actionCard);
+            
+            // Add event listeners to action buttons
+            document.getElementById('goto-face-analysis').addEventListener('click', function() {
+                document.querySelector('#nav-analyzer').click();
+            });
+            
+            document.getElementById('goto-combined-analysis').addEventListener('click', function() {
+                document.querySelector('#nav-results').click();
+            });
+        }
+
+        // Function to select a zone
+        function selectZone(zone) {
+            currentZone = zone;
+            
+            // Update zone buttons
+            document.querySelectorAll('.zone-btn[data-zone]').forEach(btn => {
+                if (btn.getAttribute('data-zone') === zone) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Update current zone display
+            document.getElementById('current-zone').textContent = physiognomyData[zone].name;
+            
+            // Load characteristics for this zone
+            loadCharacteristics(zone);
+        }
+
+        // Function to load characteristics for a zone
+        function loadCharacteristics(zone) {
+            const container = document.getElementById('char-options');
+            const characteristics = physiognomyData[zone].characteristics;
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            // Create characteristic options
+            characteristics.forEach(char => {
+                const option = document.createElement('div');
+                option.className = 'char-option';
+                if (selectedCharacteristics[zone] === char.id) {
+                    option.classList.add('selected');
+                }
+                option.setAttribute('data-id', char.id);
+                option.innerHTML = `
+                    <h4>${char.name}</h4>
+                    <p>${char.description}</p>
+                `;
+                
+                option.addEventListener('click', function() {
+                    // Deselect all options in this zone
+                    document.querySelectorAll('.char-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Select this option
+                    this.classList.add('selected');
+                    
+                    // Store selection
+                    selectedCharacteristics[zone] = char.id;
+                });
+                
+                container.appendChild(option);
+            });
+        }
+
+        // Function to perform face analysis
+        function performFaceAnalysis() {
+            // Check if at least one characteristic is selected
+            const selectedCount = Object.values(selectedCharacteristics).filter(val => val !== null).length;
+            
+            if (selectedCount === 0) {
+                alert('Pilih setidaknya satu karakteristik wajah untuk dianalisis.');
+                return;
+            }
+            
+            // Navigate to results
+            document.querySelector('#nav-results').click();
+        }
+
+        // Function to show combined results
+        function showCombinedResults() {
+            // Check if we have data to show
+            const faceSelectedCount = Object.values(selectedCharacteristics).filter(val => val !== null).length;
+            const hasBirthdateData = birthdateData !== null;
+            
+            if (faceSelectedCount === 0 && !hasBirthdateData) {
+                // No data, show message
+                document.getElementById('combined-results-content').innerHTML = `
+                    <div class="result-card" style="grid-column: 1/-1; text-align: center;">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Belum Ada Data Analisis</h4>
+                        <p>Untuk melihat hasil analisis lengkap, silakan lakukan analisis tanggal lahir dan/atau analisis wajah terlebih dahulu.</p>
+                        <div style="display: flex; gap: 15px; margin-top: 20px; justify-content: center;">
+                            <button id="goto-birthdate-from-results" class="zone-btn">
+                                <i class="fas fa-birthday-cake"></i> Analisis Tanggal Lahir
+                            </button>
+                            <button id="goto-face-from-results" class="zone-btn">
+                                <i class="fas fa-user-circle"></i> Analisis Wajah
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listeners
+                document.getElementById('goto-birthdate-from-results').addEventListener('click', function() {
+                    document.querySelector('#nav-birthdate').click();
+                });
+                
+                document.getElementById('goto-face-from-results').addEventListener('click', function() {
+                    document.querySelector('#nav-analyzer').click();
+                });
+                
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('combined-loading').classList.add('active');
+            
+            // Simulate analysis delay
+            setTimeout(() => {
+                // Generate combined results
+                const combinedResults = generateCombinedResults();
+                
+                // Display results
+                displayCombinedResults(combinedResults);
+                
+                // Hide loading
+                document.getElementById('combined-loading').classList.remove('active');
+            }, 800);
+        }
+
+        // Function to generate combined results
+        function generateCombinedResults() {
+            const results = {
+                faceAnalysis: null,
+                birthdateAnalysis: null,
+                compatibility: null,
+                overallProfile: null
+            };
+            
+            // Face analysis results
+            if (Object.values(selectedCharacteristics).filter(val => val !== null).length > 0) {
+                results.faceAnalysis = [];
+                for (const zone in selectedCharacteristics) {
+                    if (selectedCharacteristics[zone]) {
+                        const charId = selectedCharacteristics[zone];
+                        const zoneData = physiognomyData[zone];
+                        const characteristic = zoneData.characteristics.find(c => c.id === charId);
+                        
+                        if (characteristic) {
+                            results.faceAnalysis.push({
+                                zone: zoneData.name,
+                                characteristic: characteristic.name,
+                                description: characteristic.description
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // Birthdate analysis results
+            if (birthdateData) {
+                results.birthdateAnalysis = {
+                    zodiac: birthdateData.zodiac,
+                    numerology: {
+                        number: birthdateData.lifePath.number,
+                        data: numerologyData[birthdateData.lifePath.number]
+                    },
+                    date: birthdateData.date
+                };
+            }
+            
+            // Generate compatibility analysis if both analyses exist
+            if (results.faceAnalysis && results.birthdateAnalysis) {
+                results.compatibility = generateCompatibilityAnalysis(results.faceAnalysis, results.birthdateAnalysis);
+            }
+            
+            // Generate overall profile
+            results.overallProfile = generateOverallProfile(results);
+            
+            return results;
+        }
+
+        // Function to generate compatibility analysis
+        function generateCompatibilityAnalysis(faceAnalysis, birthdateAnalysis) {
+            let compatibilityScore = 70; // Base score
+            
+            // Simple compatibility logic based on traits
+            const zodiacElement = birthdateAnalysis.zodiac.element;
+            const numerologyNumber = birthdateAnalysis.numerology.number;
+            
+            // Check for element compatibility with face traits
+            let elementMatch = false;
+            let description = "";
+            
+            // Analyze face traits for element compatibility
+            const faceTraits = faceAnalysis.map(f => f.description.toLowerCase()).join(' ');
+            
+            if (zodiacElement === "Api") {
+                if (faceTraits.includes('energi') || faceTraits.includes('semangat') || faceTraits.includes('optimis')) {
+                    compatibilityScore += 15;
+                    elementMatch = true;
+                }
+                description = "Zodiak Api Anda cocok dengan energi dan semangat yang terpancar dari wajah Anda.";
+            } else if (zodiacElement === "Tanah") {
+                if (faceTraits.includes('praktis') || faceTraits.includes('stabil') || faceTraits.includes('dapat diandalkan')) {
+                    compatibilityScore += 15;
+                    elementMatch = true;
+                }
+                description = "Zodiak Tanah Anda selaras dengan sifat praktis dan stabil dari analisis wajah.";
+            } else if (zodiacElement === "Udara") {
+                if (faceTraits.includes('komunikasi') || faceTraits.includes('kreatif') || faceTraits.includes('ekspresif')) {
+                    compatibilityScore += 15;
+                    elementMatch = true;
+                }
+                description = "Zodiak Udara Anda harmonis dengan kemampuan komunikasi dan kreativitas dari analisis wajah.";
+            } else if (zodiacElement === "Air") {
+                if (faceTraits.includes('empati') || faceTraits.includes('intuitif') || faceTraits.includes('sensitif')) {
+                    compatibilityScore += 15;
+                    elementMatch = true;
+                }
+                description = "Zodiak Air Anda selaras dengan sifat empati dan intuisi dari analisis wajah.";
+            }
+            
+            if (!elementMatch) {
+                compatibilityScore -= 10;
+                description = "Ada beberapa ketidakselarasan antara zodiak Anda dan analisis wajah, namun perbedaan ini dapat melengkapi kepribadian Anda.";
+            }
+            
+            // Numerology compatibility
+            if (numerologyNumber === 1 || numerologyNumber === 8) {
+                // Leader numbers
+                if (faceTraits.includes('kepemimpinan') || faceTraits.includes('ambisi') || faceTraits.includes('percaya diri')) {
+                    compatibilityScore += 10;
+                    description += " Angka jalan hidup Anda mendukung sifat kepemimpinan yang terlihat dari wajah.";
+                }
+            } else if (numerologyNumber === 2 || numerologyNumber === 6) {
+                // Nurturer numbers
+                if (faceTraits.includes('ramah') || faceTraits.includes('penyayang') || faceTraits.includes('baik hati')) {
+                    compatibilityScore += 10;
+                    description += " Angka jalan hidup Anda selaras dengan sifat pengasuh dari analisis wajah.";
+                }
+            } else if (numerologyNumber === 3 || numerologyNumber === 5) {
+                // Creative/Adventurous numbers
+                if (faceTraits.includes('kreatif') || faceTraits.includes('ekspresif') || faceTraits.includes('petualang')) {
+                    compatibilityScore += 10;
+                    description += " Angka jalan hidup Anda mendukung kreativitas dan ekspresivitas dari wajah Anda.";
+                }
+            }
+            
+            // Ensure score is between 0-100
+            compatibilityScore = Math.max(0, Math.min(100, compatibilityScore));
+            
+            // Determine compatibility level
+            let level = "Sedang";
+            let levelColor = "var(--warning)";
+            
+            if (compatibilityScore >= 80) {
+                level = "Sangat Tinggi";
+                levelColor = "var(--success)";
+            } else if (compatibilityScore >= 65) {
+                level = "Tinggi";
+                levelColor = "#8bc34a";
+            } else if (compatibilityScore < 50) {
+                level = "Rendah";
+                levelColor = "#f44336";
+            }
+            
+            return {
+                score: compatibilityScore,
+                level: level,
+                levelColor: levelColor,
+                description: description
+            };
+        }
+
+        // Function to generate overall profile
+        function generateOverallProfile(results) {
+            let title = "Profil Unik";
+            let description = "Anda memiliki kombinasi karakteristik yang menarik. ";
+            
+            const hasFace = results.faceAnalysis && results.faceAnalysis.length > 0;
+            const hasBirthdate = results.birthdateAnalysis !== null;
+            
+            if (hasFace && !hasBirthdate) {
+                title = "Profil Berdasarkan Wajah";
+                description = "Analisis fisiognomi menunjukkan karakteristik dominan Anda. ";
+            } else if (!hasFace && hasBirthdate) {
+                title = "Profil Berdasarkan Tanggal Lahir";
+                description = "Numerologi dan zodiak berdasarkan tanggal lahir memberikan insight tentang potensi dan karakter dasar Anda. ";
+            } else if (hasFace && hasBirthdate) {
+                title = "Profil Lengkap";
+                description = "Kombinasi analisis wajah dan tanggal lahir memberikan gambaran komprehensif tentang kepribadian Anda. ";
+                
+                // Add specific insights based on compatibility
+                if (results.compatibility && results.compatibility.score >= 70) {
+                    description += "Terdapat keselarasan yang baik antara karakteristik wajah dan potensi berdasarkan tanggal lahir Anda. ";
+                } else if (results.compatibility && results.compatibility.score < 50) {
+                    description += "Terdapat beberapa perbedaan antara karakteristik wajah dan potensi berdasarkan tanggal lahir, menunjukkan kompleksitas kepribadian. ";
+                }
+            }
+            
+            // Add general advice
+            description += "Gunakan insight ini sebagai bahan refleksi diri, namun ingat bahwa manusia adalah makhluk kompleks yang terus berkembang.";
+            
+            return { title, description };
+        }
+
+        // Function to display combined results
+        function displayCombinedResults(results) {
+            const container = document.getElementById('combined-results-content');
+            
+            container.innerHTML = '';
+            
+            // Overall profile card
+            if (results.overallProfile) {
+                const overallCard = document.createElement('div');
+                overallCard.className = 'result-card';
+                overallCard.style.gridColumn = '1/-1';
+                overallCard.style.borderTop = '4px solid var(--primary)';
+                overallCard.innerHTML = `
+                    <h4><i class="fas fa-user-circle"></i> ${results.overallProfile.title}</h4>
+                    <p>${results.overallProfile.description}</p>
+                `;
+                container.appendChild(overallCard);
+            }
+            
+            // Face analysis results
+            if (results.faceAnalysis && results.faceAnalysis.length > 0) {
+                const faceCard = document.createElement('div');
+                faceCard.className = 'result-card face';
+                faceCard.style.gridColumn = results.birthdateAnalysis ? 'span 1' : '1/-1';
+                
+                let faceHTML = `<h4><i class="fas fa-user-circle"></i> Analisis Wajah (Fisiognomi)</h4>`;
+                faceHTML += `<p><strong>Zona yang Dianalisis:</strong> ${results.faceAnalysis.length} dari 5 zona</p>`;
+                
+                results.faceAnalysis.forEach(analysis => {
+                    faceHTML += `
+                        <div style="margin-top: 15px; padding: 10px; background-color: rgba(201, 173, 167, 0.1); border-radius: 8px;">
+                            <h5 style="color: var(--primary); margin-bottom: 5px;">${analysis.zone}: ${analysis.characteristic}</h5>
+                            <p style="font-size: 0.95rem;">${analysis.description}</p>
+                        </div>
+                    `;
+                });
+                
+                faceCard.innerHTML = faceHTML;
+                container.appendChild(faceCard);
+            }
+            
+            // Birthdate analysis results
+            if (results.birthdateAnalysis) {
+                const birthdateCard = document.createElement('div');
+                birthdateCard.className = 'result-card';
+                birthdateCard.style.gridColumn = results.faceAnalysis ? 'span 1' : '1/-1';
+                
+                birthdateCard.innerHTML = `
+                    <h4><i class="fas fa-birthday-cake"></i> Analisis Tanggal Lahir</h4>
+                    <p><strong>Tanggal:</strong> ${results.birthdateAnalysis.date}</p>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background-color: rgba(109, 89, 122, 0.1); border-radius: 8px;">
+                        <h5 style="color: var(--zodiac); margin-bottom: 5px;"><i class="${results.birthdateAnalysis.zodiac.icon}"></i> ${results.birthdateAnalysis.zodiac.name}</h5>
+                        <p style="font-size: 0.95rem;">${results.birthdateAnalysis.zodiac.description}</p>
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 10px; background-color: rgba(74, 124, 89, 0.1); border-radius: 8px;">
+                        <h5 style="color: var(--success); margin-bottom: 5px;"><i class="fas fa-calculator"></i> Angka Jalan Hidup: ${results.birthdateAnalysis.numerology.number}</h5>
+                        <p style="font-size: 0.95rem;">${results.birthdateAnalysis.numerology.data.description}</p>
+                    </div>
+                `;
+                container.appendChild(birthdateCard);
+            }
+            
+            // Compatibility analysis results
+            if (results.compatibility) {
+                const compatibilityCard = document.createElement('div');
+                compatibilityCard.className = 'result-card';
+                compatibilityCard.style.gridColumn = '1/-1';
+                
+                compatibilityCard.innerHTML = `
+                    <h4><i class="fas fa-heart"></i> Kesesuaian Analisis</h4>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 3rem; font-weight: bold; color: ${results.compatibility.levelColor};">${results.compatibility.score}%</div>
+                        <div style="font-size: 1.2rem; color: ${results.compatibility.levelColor}; font-weight: 600;">Kesesuaian: ${results.compatibility.level}</div>
+                    </div>
+                    <p>${results.compatibility.description}</p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #666;"><i>Catatan: Kesesuaian mengukur sejauh mana karakteristik wajah selaras dengan potensi berdasarkan tanggal lahir. Tingkat kesesuaian yang tinggi menunjukkan konsistensi dalam kepribadian.</i></p>
+                `;
+                container.appendChild(compatibilityCard);
+            }
+            
+            // Advice card
+            const adviceCard = document.createElement('div');
+            adviceCard.className = 'result-card';
+            adviceCard.style.gridColumn = '1/-1';
+            adviceCard.style.backgroundColor = '#f8f9fa';
+            
+            let adviceHTML = `<h4><i class="fas fa-lightbulb"></i> Saran & Rekomendasi</h4>`;
+            
+            if (results.faceAnalysis && results.birthdateAnalysis) {
+                adviceHTML += `
+                    <p>Berdasarkan analisis lengkap Anda, berikut beberapa saran:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Gunakan kekuatan yang teridentifikasi dari kedua analisis untuk mengembangkan potensi Anda</li>
+                        <li>Perhatikan area yang mungkin memerlukan pengembangan berdasarkan kelemahan yang diidentifikasi</li>
+                        <li>Analisis ini adalah titik awal untuk refleksi diri, bukan penilaian mutlak tentang karakter Anda</li>
+                        <li>Manusia terus berkembang, jadi gunakan insight ini sebagai panduan, bukan pembatas</li>
+                    </ul>
+                `;
+            } else if (results.faceAnalysis) {
+                adviceHTML += `<p>Untuk mendapatkan analisis yang lebih lengkap, coba tambahkan analisis tanggal lahir. Kombinasi fisiognomi dan numerologi akan memberikan gambaran karakter yang lebih komprehensif.</p>`;
+            } else if (results.birthdateAnalysis) {
+                adviceHTML += `<p>Analisis tanggal lahir memberikan insight tentang potensi dasar. Untuk melengkapinya, tambahkan analisis wajah (fisiognomi) untuk memahami bagaimana karakteristik fisik mungkin mencerminkan kepribadian Anda.</p>`;
+            }
+            
+            adviceHTML += `<p style="margin-top: 15px;"><strong>Disclaimer:</strong> Analisis ini untuk tujuan edukasi dan hiburan semata. Hasil tidak dimaksudkan sebagai nasihat profesional atau prediksi masa depan.</p>`;
+            
+            adviceCard.innerHTML = adviceHTML;
+            container.appendChild(adviceCard);
+        }
+
+        // Function to save combined analysis
+        function saveCombinedAnalysis() {
+            // Generate combined results
+            const combinedResults = generateCombinedResults();
+            
+            // Create analysis record
+            const analysisRecord = {
+                id: Date.now(),
+                date: new Date().toLocaleString('id-ID'),
+                results: combinedResults,
+                hasFaceAnalysis: combinedResults.faceAnalysis !== null,
+                hasBirthdateAnalysis: combinedResults.birthdateAnalysis !== null
+            };
+            
+            // Add to history
+            analysisHistory.unshift(analysisRecord);
+            
+            // Keep only last 10 analyses
+            if (analysisHistory.length > 10) {
+                analysisHistory = analysisHistory.slice(0, 10);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('physiognomyBirthdateHistory', JSON.stringify(analysisHistory));
+            
+            // Show success message
+            alert('Analisis berhasil disimpan! Anda dapat melihatnya nanti di riwayat analisis.');
+        }
+
+        // Initialize the application
+        function initApp() {
+            // Load initial zone characteristics
+            loadCharacteristics(currentZone);
+            
+            // Set current date as default for birthdate input
+            const today = new Date();
+            const twentyYearsAgo = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
+            const formattedDate = twentyYearsAgo.toISOString().split('T')[0];
+            document.getElementById('birth-date').value = formattedDate;
+            
+            // Update preview
+            updateBirthdatePreview();
+            
+            // Set current year in footer
+            const currentYear = new Date().getFullYear();
+            document.querySelector('.copyright p').innerHTML = `&copy; ${currentYear} Aplikasi Fisiognomi & Ramalan. Dibuat untuk tujuan edukasi dan hiburan.`;
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
